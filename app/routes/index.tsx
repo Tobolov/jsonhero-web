@@ -46,7 +46,6 @@ export default function Index() {
 
       <HomeHeader fixed={true} />
       <HomeHeroSection />
-      <HomeTriggerDevBanner />
       <HomeInfoBoxSection />
       <HomeEdgeCasesSection />
       <HomeSearchSection />
