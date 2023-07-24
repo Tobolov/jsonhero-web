@@ -1,4 +1,4 @@
-import { LoaderFunction } from "remix";
+import { LoaderFunction }from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getUriPreview } from "~/services/uriPreview.server";
 

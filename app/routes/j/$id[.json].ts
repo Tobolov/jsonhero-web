@@ -1,4 +1,4 @@
-import { json, LoaderFunction } from "remix";
+import { json, LoaderFunction }from "@remix-run/cloudflare";
 import invariant from "tiny-invariant";
 import { getDocument } from "~/jsonDoc.server";
 

@@ -8,8 +8,8 @@ import {
   ScrollRestoration,
   useLoaderData,
   useLocation,
-} from "remix";
-import type { MetaFunction } from "remix";
+}from "@remix-run/react";
+import type { MetaFunction }from "@remix-run/react";
 import clsx from "clsx";
 import {
   NonFlashOfWrongThemeEls,

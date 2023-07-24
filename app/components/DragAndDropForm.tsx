@@ -1,7 +1,11 @@
 import { ArrowCircleDownIcon } from "@heroicons/react/outline";
 import { useCallback, useRef } from "react";
 import { useDropzone } from "react-dropzone";
-import { Form, useSubmit } from "remix";
+import { Form, useSubmit }from "@remix-run/react";
+import { 
+  unstable_createMemoryUploadHandler,
+  unstable_parseMultipartFormData, 
+} from '@remix-run/cloudflare';
 import invariant from "tiny-invariant";
 
 export function DragAndDropForm() {
@@ -44,6 +48,7 @@ export function DragAndDropForm() {
         invariant(rawJsonInputRef.current, "rawJsonInputRef is null");
         invariant(jsonValue, "jsonValue is undefined");
 
+        console.log("Tail web: ", jsonValue.slice(-50))
         rawJsonInputRef.current.value = jsonValue;
 
         submit(formRef.current);
@@ -57,13 +62,13 @@ export function DragAndDropForm() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDropAccepted: onDrop,
     maxFiles: 1,
-    maxSize: 1024 * 1024 * 1,
+    maxSize: 1024 * 1024 * 1024 * 10,
     multiple: false,
     accept: "application/json",
   });
 
   return (
-    <Form method="post" action="/actions/createFromFile" ref={formRef}>
+    <Form method="post" action="/actions/createFromFile" ref={formRef} encType="multipart/form-data">
       <div
         {...getRootProps()}
         className="block min-w-[300px] cursor-pointer rounded-md border-2 border-dashed border-slate-600 bg-slate-900/40 p-4 text-base text-slate-300 focus:border-indigo-500 focus:ring-indigo-500"

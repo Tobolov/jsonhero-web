@@ -1,7 +1,12 @@
-import { ActionFunction, redirect } from "remix";
+import { ActionFunction, redirect }from "@remix-run/cloudflare";
 import invariant from "tiny-invariant";
 import { sendEvent } from "~/graphJSON.server";
 import { createFromRawJson } from "~/jsonDoc.server";
+import { 
+  unstable_createMemoryUploadHandler,
+  unstable_parseMultipartFormData, 
+} from '@remix-run/cloudflare';
+
 
 type CreateFromFileError = {
   filename?: boolean;
@@ -9,7 +14,13 @@ type CreateFromFileError = {
 };
 
 export const action: ActionFunction = async ({ request, context }) => {
-  const formData = await request.formData();
+  const uploadHandler = unstable_createMemoryUploadHandler({
+    maxPartSize: 500_000_000,
+  });
+  const formData = await unstable_parseMultipartFormData(
+    request,
+    uploadHandler
+  );
   const filename = formData.get("filename");
   const rawJson = formData.get("rawJson");
 
@@ -25,6 +36,7 @@ export const action: ActionFunction = async ({ request, context }) => {
   invariant(typeof filename === "string", "filename must be a string");
   invariant(typeof rawJson === "string", "rawJson must be a string");
 
+  console.log("Tail: ", rawJson.slice(-200))
   const doc = await createFromRawJson(filename, rawJson);
 
   const url = new URL(request.url);
